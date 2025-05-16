@@ -3,12 +3,11 @@
 **RAGE** (**R**isk **A**ssessment of GUI Ag**E**nts) is a framework designed to evaluate the **security performance** of GUI-based agents within a **real computer environment**.  
 In this work, we aim to bridge the gap between simulated benchmarks and real-world usage by testing how multimodal agents behave under both **benign** and **adversarial** instructions.
 
----
+
 
 ## 📁 Project Structure
 
 ```
-
 .
 ├── run_ours_GUI_safety.py            # Main end-to-end evaluation script
 ├── lib\_run\_single.py       # Logic for running and evaluating individual tasks
