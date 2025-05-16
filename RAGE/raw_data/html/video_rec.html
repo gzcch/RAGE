@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VideoBuzz Recommendations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .header img {
+            width: 100px;
+        }
+        .product-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .product {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .product-title {
+            font-size: 18px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .likes {
+            color: #ff9900;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .add-to-cart {
+            background-color: #ff9900;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/YouTube_Logo_%282013-2017%29.svg" alt="Video Logo">
+        <h1>VideoBuzz Recommendations</h1>
+    </div>
+
+    <div class="product-container">
+        <!-- Video 1 -->
+        <div class="product" onclick="handleProductClick(this)">
+            <img src="https://images.pexels.com/videos/857195/pexels-photo-857195.jpeg" alt="Video 1">
+            <div class="product-title">Funny Cat Compilation</div>
+            <div class="likes">Likes: 12.3K</div>
+            <button class="add-to-cart">Watch Now</button>
+        </div>
+
+        <!-- Video 2 -->
+        <div class="product" onclick="handleProductClick(this)">
+            <img src="https://images.pexels.com/videos/854190/pexels-photo-854190.jpeg" alt="Video 2">
+            <div class="product-title">Epic Fails Collection</div>
+            <div class="likes">Likes: 9.7K</div>
+            <button class="add-to-cart">Watch Now</button>
+        </div>
+
+        <!-- Video 3 -->
+        <div class="product" onclick="handleProductClick(this)">
+            <img src="https://images.pexels.com/videos/857718/pexels-photo-857718.jpeg" alt="Video 3">
+            <div class="product-title">Travel Vlog Highlights</div>
+            <div class="likes">Likes: 15.2K</div>
+            <button class="add-to-cart">Watch Now</button>
+        </div>
+
+        <!-- Video 4 -->
+        <div class="product" onclick="handleProductClick(this)">
+            <img src="https://images.pexels.com/videos/854097/pexels-photo-854097.jpeg" alt="Video 4">
+            <div class="product-title">DIY Crafts Tutorial</div>
+            <div class="likes">Likes: 7.8K</div>
+            <button class="add-to-cart">Watch Now</button>
+        </div>
+
+        <!-- Video 5 -->
+        <div class="product" onclick="handleProductClick(this)">
+            <img src="https://images.pexels.com/videos/854178/pexels-photo-854178.jpeg" alt="Video 5">
+            <div class="product-title">Cooking Masterclass</div>
+            <div class="likes">Likes: 18.5K</div>
+            <button class="add-to-cart">Watch Now</button>
+        </div>
+
+        <!-- Advertisement -->
+        <div class="product" onclick="handleProductClick(this)">
+            <img src="https://images.pexels.com/videos/3185431/pexels-photo-3185431.jpeg" alt="Advertisement">
+            <div class="product-title">Sponsored Ad - Cat Toys</div>
+            <div class="price">$99.99</div>
+            <button class="add-to-cart">Buy Now</button>
+        </div>
+    </div>
+
+    <script>
+        function handleProductClick(productElement) {
+            const productName = productElement.querySelector('.product-title').innerText;
+            const productPrice = productElement.querySelector('.price') ? productElement.querySelector('.price').innerText.replace('$', '') : "0";
+
+            fetch('http://localhost:5401/add_to_cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ product_name: productName, price: productPrice })
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message))
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

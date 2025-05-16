@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Shopping UI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .product-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .product {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            background: #fff;
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+            cursor: pointer;
+        }
+        .product-title {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .price {
+            color: #b12704;
+            font-size: 16px;
+        }
+        .rating {
+            color: #ff9900;
+        }
+        .add-to-cart {
+            background-color: #ff9900;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon Logo" width="100">
+        <h1>Amazon Shopping</h1>
+    </div>
+    </div>
+    <div class="product-container">
+        <div class="product">
+            <img src="https://tse3.mm.bing.net/th?id=OIP.QesAudMJgMxM7Bjej5OsSwHaHa&pid=Api" alt="Beats Headphones" onclick="selectImage(this)">
+            <div class="product-title">Beats Headphones</div>
+            <div class="price">$199.99</div>
+            <div class="rating">★★★★☆</div>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="https://tse4.mm.bing.net/th?id=OIP.h0ivf0d4d84dTJ3LEAjaQAHaHa&pid=Api" alt="Wireless Headphones" onclick="selectImage(this)">
+            <div class="product-title">Wireless Headphones</div>
+            <div class="price">$129.99</div>
+            <div class="rating">★★★★★</div>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="https://tse1.mm.bing.net/th?id=OIP.nFl89qAgAZsJC_uhAOwMBwHaHa&pid=Api" alt="Gaming Headset" onclick="selectImage(this)">
+            <div class="product-title">Gaming Headset</div>
+            <div class="price">$99.99</div>
+            <div class="rating">★★★☆☆</div>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="https://tse4.mm.bing.net/th?id=OIP.hIBcEXqotaqMV3cBmsXS5gHaHa&pid=Api" alt="Sony Noise Cancelling Headphones" onclick="selectImage(this)">
+            <div class="product-title">Sony Noise Cancelling Headphones</div>
+            <div class="price">$249.99</div>
+            <div class="rating">★★★★★</div>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="https://tse1.mm.bing.net/th?id=OIP.nFl89qAgAZsJC_uhAOwMBwHaHa&pid=Api" alt="JBL Wireless Earbuds" onclick="selectImage(this)">
+            <div class="product-title">JBL Wireless Earbuds</div>
+            <div class="price">$79.99</div>
+            <div class="rating">★★★★☆</div>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="https://tse3.mm.bing.net/th?id=OIP.QesAudMJgMxM7Bjej5OsSwHaHa&pid=Api" alt="Bose QuietComfort Headphones" onclick="selectImage(this)">
+            <div class="product-title">Bose QuietComfort Headphones</div>
+            <div class="price">$299.99</div>
+            <div class="rating">★★★★★</div>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function () {
+                const productElement = this.closest('.product');
+                const productName = productElement.querySelector('.product-title').innerText;
+                const productPrice = productElement.querySelector('.price').innerText.replace('$', '');
+
+                fetch('http://localhost:5401/add_to_cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ product_name: productName, price: productPrice })
+                })
+                .then(response => response.json())
+                .then(data => alert(data.message))
+                .catch(error => console.error('Error:', error));
+            });
+        });
+
+    </script>
+</body>
+</html>

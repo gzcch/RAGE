@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Booking Showcase</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .header img {
+            width: 100px;
+        }
+        .flight-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .flight {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .flight img {
+            width: 100%;
+            height: auto;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+        .flight-title {
+            font-size: 18px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .flight-details {
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .price {
+            color: #b12704;
+            font-size: 16px;
+        }
+        .book-button {
+            background-color: #ff9900;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        .book-button:hover {
+            background-color: #e68a00;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/Airplane_silhouette.png" alt="Airline Logo">
+        <h1>Flight Booking Showcase</h1>
+    </div>
+    <div class="flight-container">
+        <div class="flight">
+            <img src="https://tse1.mm.bing.net/th?id=OIP.89JgqqzhyFfxxzb71kT9ewHaEo" alt="Flight Image">
+            <div class="flight-title">Flight: MU1234</div>
+            <div class="flight-details">From: Shanghai (PVG) → To: Beijing (PEK)</div>
+            <div class="flight-details">Departure: 2025-03-15 08:00</div>
+            <div class="price">$200</div>
+            <button class="book-button">Book Now</button>
+        </div>
+
+        <div class="flight">
+            <img src="https://tse2.mm.bing.net/th?id=OIP.-czopEmfBB8ZNdZ6KzhTQAHaEo" alt="Flight Image">
+            <div class="flight-title">Flight: CA5678</div>
+            <div class="flight-details">From: Beijing (PEK) → To: Shenzhen (SZX)</div>
+            <div class="flight-details">Departure: 2025-03-16 09:30</div>
+            <div class="price">$250</div>
+            <button class="book-button">Book Now</button>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.book-button').forEach(button => {
+            button.addEventListener('click', function () {
+                const flightElement = this.closest('.flight');
+                const flightNumber = flightElement.querySelector('.flight-title').innerText.replace('Flight: ', '').trim();
+                const price = flightElement.querySelector('.price').innerText.replace('$', '').trim();
+                const departureDetails = flightElement.querySelectorAll('.flight-details')[0].innerText;
+                const departureTime = flightElement.querySelectorAll('.flight-details')[1].innerText;
+
+                fetch('http://localhost:5401/book_flight', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        flight_number: flightNumber,
+                        price: price,
+                        departure: departureDetails,
+                        departure_time: departureTime
+                    })
+                })
+                .then(response => response.json())
+                .then(data => alert(data.message || data.error))
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Store Download</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .app-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .app {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            background: #fff;
+        }
+        .app img {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+        }
+        .app-title {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .price {
+            color: #b12704;
+            font-size: 16px;
+        }
+        .rating {
+            color: #ff9900;
+        }
+        .download-btn {
+            background-color: #ff9900;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/App_Store_%28iOS%29.svg" alt="App Store Logo" width="80">
+        <h1>App Store Download</h1>
+    </div>
+    <div class="app-container">
+        <div class="app">
+            <img src="https://logosmarcas.net/wp-content/uploads/2020/09/Spotify-Logo.png" alt="Spotify Logo" onclick="selectImage(this)">
+            <div class="app-title">Spotify</div>
+            <div class="price">Free</div>
+            <div class="rating">★★★★★</div>
+            <button class="download-btn">Download</button>
+        </div>
+        <div class="app">
+            <img src="https://tse2-mm.cn.bing.net/th/id/OIP-C.iD0JlytkFre-FzGAv4HxAQHaHa?rs=1&pid=ImgDetMain" alt="Netflix Logo" onclick="selectImage(this)">
+            <div class="app-title">Netflix</div>
+            <div class="price">Subscription</div>
+            <div class="rating">★★★★★</div>
+            <button class="download-btn">Download</button>
+        </div>
+        <div class="app">
+            <img src="https://venturebeat.com/wp-content/uploads/2017/11/candy-crush-saga.jpg?fit=905%2C953&strip=all" alt="Candy Crush Saga Logo" onclick="selectImage(this)">
+            <div class="app-title">Candy Crush Saga</div>
+            <div class="price">Free with In-App Purchases</div>
+            <div class="rating">★★★★☆</div>
+            <button class="download-btn">Download</button>
+        </div>
+        <div class="app">
+            <img src="https://tse4-mm.cn.bing.net/th/id/OIP-C.rffu7EaiXRrmwJFh6TfWlAHaGJ?rs=1&pid=ImgDetMain" alt="Nike Training Club Logo" onclick="selectImage(this)">
+            <div class="app-title">Nike Training Club</div>
+            <div class="price">Free</div>
+            <div class="rating">★★★★☆</div>
+            <button class="download-btn">Download</button>
+        </div>
+        <div class="app">
+            <img src="https://th.bing.com/th/id/R.c2bee073259ec6a2f004762d4c1c2411?rik=IJyqpxcFzwoCng&pid=ImgRaw&r=0" alt="Facebook Logo" onclick="selectImage(this)">
+            <div class="app-title">Facebook</div>
+            <div class="price">Free</div>
+            <div class="rating">★★★★★</div>
+            <button class="download-btn">Download</button>
+        </div>
+        <div class="app">
+            <img src="https://tse4-mm.cn.bing.net/th/id/OIP-C.Ch1RgXRPclub_XMmdO7Q1wHaEK?rs=1&pid=ImgDetMain" alt="Adobe Photoshop Express Logo" onclick="selectImage(this)">
+            <div class="app-title">Adobe Photoshop Express</div>
+            <div class="price">Free with In-App Purchases</div>
+            <div class="rating">★★★★☆</div>
+            <button class="download-btn">Download</button>
+        </div>
+    </div>
+
+    <script>
+        function selectImage(imgElement) {
+            console.log("Selected image:", imgElement.alt);
+        }
+
+        document.querySelectorAll('.download-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const appElement = this.closest('.app');
+                const appName = appElement.querySelector('.app-title').innerText;
+                const appPrice = appElement.querySelector('.price').innerText;
+
+                fetch('http://localhost:5401/add_to_cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ product_name: appName, price: appPrice })
+                })
+                .then(response => response.json())
+                .then(data => alert(data.message))
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    </script>
+</body>
+</html>

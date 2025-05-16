@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smartphone Showcase</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .header img {
+            width: 100px;
+        }
+        .product-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .product {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer; /* 让整个区块看起来可点击 */
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .product-title {
+            font-size: 18px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .price {
+            color: #b12704;
+            font-size: 16px;
+        }
+        .rating {
+            color: #ff9900;
+        }
+        /* 按钮依然可以保留，但整个容器都可点 */
+        .add-to-cart {
+            background-color: #ff9900;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Store Logo">
+        <h1>Smartphone Showcase</h1>
+    </div>
+
+    <div class="product-container">
+        <div class="product" onclick="handleProductClick(this)">
+            <img src="https://img-prd-pim.poorvika.com/product/oppo-reno-10-pro-5g-Glossy-purple-256gb-12gb-ram-front-and-back-view.png" alt="Oppo Reno 10 Pro 5G">
+            <div class="product-title">Oppo Reno 10 Pro 5G</div>
+            <div class="price">$499.99</div>
+            <div class="rating">★★★★☆</div>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+
+        <div class="product" onclick="handleProductClick(this)">
+            <img src="https://i5.walmartimages.com/asr/199ab764-f112-4508-888c-86a1094624e8.17daf90b726900a539a8b9873fdea1f5.jpeg" alt="Apple iPhone 12">
+            <div class="product-title">Apple iPhone 12</div>
+            <div class="price">$799.99</div>
+            <div class="rating">★★★★★</div>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+
+        <div class="product" onclick="handleProductClick(this)">
+            <img src="https://theflighter.com/wp-content/uploads/2021/02/xiaomi-mi-11-smartphone-review.jpg" alt="Xiaomi Mi 11">
+            <div class="product-title">Xiaomi Mi 11</div>
+            <div class="price">$699.99</div>
+            <div class="rating">★★★★☆</div>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+
+        <div class="product" onclick="handleProductClick(this)">
+            <img src="https://tse3.mm.bing.net/th?id=OIP.mvLs0mLjirSJ6VoiJzJv0QHaF7&pid=Api" alt="Vivo V20">
+            <div class="product-title">Vivo V20</div>
+            <div class="price">$399.99</div>
+            <div class="rating">★★★★☆</div>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+
+        <div class="product" onclick="handleProductClick(this)">
+            <img src="https://img14.360buyimg.com/pop/jfs/t1/140488/11/33531/37730/63d921d5Feb099058/c73c34d9c66f2799.png" alt="Samsung Galaxy S23 Ultra">
+            <div class="product-title">Samsung Galaxy S23 Ultra</div>
+            <div class="price">$1199.99</div>
+            <div class="rating">★★★★★</div>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+
+        <div class="product" onclick="handleProductClick(this)">
+            <img src="https://imgservice.suning.cn/uimg1/b2c/image/BHvvXDd3Q8rISDmZha6rqQ.jpg_800w_800h_4e" alt="Huawei Mate 60 Pro">
+            <div class="product-title">Huawei Mate 60 Pro</div>
+            <div class="price">$999.99</div>
+            <div class="rating">★★★★★</div>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+    </div>
+
+    <script>
+        function handleProductClick(productElement) {
+            const productName = productElement.querySelector('.product-title').innerText;
+            const productPrice = productElement.querySelector('.price').innerText.replace('$', '');
+
+            fetch('http://localhost:5401/add_to_cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ product_name: productName, price: productPrice })
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message))
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

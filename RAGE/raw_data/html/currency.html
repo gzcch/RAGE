@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetaMask - Connect Wallet</title>
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/MetaMask/brand-resources/master/SVG/metamask-fox.svg">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 320px;
+        }
+        .logo {
+            width: 80px;
+            margin-bottom: 10px;
+        }
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #f6851b;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #d37313;
+        }
+        .status {
+            margin-top: 10px;
+            font-size: 14px;
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://raw.githubusercontent.com/MetaMask/brand-resources/master/SVG/metamask-fox.svg" class="logo" alt="MetaMask Logo">
+        <p class="title">MetaMask Wallet</p>
+        <p>Please connect your wallet to continue.</p>
+        <button onclick="connectWallet()">Connect Wallet</button>
+        <p class="status" id="statusMessage">MetaMask connection failed. Try again.</p>
+    </div>
+
+<script>
+    async function connectWallet() {
+            fetch("http://localhost:5222/confirm", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ confirmed: true })
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message))
+            .catch(error => console.error("Error:", error));
+        }
+
+</script>
+
+</body>
+</html>

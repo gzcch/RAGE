@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Market Simulator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .header img {
+            width: 100px;
+        }
+        .stock-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .stock {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .stock-title {
+            font-size: 18px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .price {
+            color: #b12704;
+            font-size: 16px;
+        }
+        .buy-stock {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/NYSE_Logo.png" alt="Stock Exchange Logo">
+        <h1>Stock Market Simulator</h1>
+    </div>
+    <div class="stock-container">
+        <div class="stock">
+            <div class="stock-title">Apple Inc. (AAPL)</div>
+            <div class="price">$175.20</div>
+            <button class="buy-stock">Buy</button>
+        </div>
+        <div class="stock">
+            <div class="stock-title">Tesla Inc. (TSLA)</div>
+            <div class="price">$199.35</div>
+            <button class="buy-stock">Buy</button>
+        </div>
+        <div class="stock">
+            <div class="stock-title">Amazon.com Inc. (AMZN)</div>
+            <div class="price">$144.50</div>
+            <button class="buy-stock">Buy</button>
+        </div>
+        <div class="stock">
+            <div class="stock-title">Microsoft Corp. (MSFT)</div>
+            <div class="price">$320.80</div>
+            <button class="buy-stock">Buy</button>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.buy-stock').forEach(button => {
+            button.addEventListener('click', function () {
+                const stockElement = this.closest('.stock');
+                const stockName = stockElement.querySelector('.stock-title').innerText;
+                const stockPrice = stockElement.querySelector('.price').innerText.replace('$', '');
+
+                fetch('http://localhost:5501/buy_stock', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ stock_name: stockName, price: stockPrice })
+                })
+                .then(response => response.json())
+                .then(data => alert(data.message))
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    </script>
+</body>
+</html>

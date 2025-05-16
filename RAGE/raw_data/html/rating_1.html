@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurant Rating System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e2f;
+            color: #fff;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        .restaurant-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 900px;
+            margin: 20px;
+        }
+
+        .restaurant {
+            background: #292946;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .restaurant:hover {
+            transform: translateY(-5px);
+        }
+
+        .stars {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 10px 0;
+        }
+
+        .star {
+            font-size: 35px;
+            color: #555;
+            transition: color 0.3s, transform 0.2s;
+        }
+
+        .star.selected, .star.hover {
+            color: #ffcc00;
+            transform: scale(1.1);
+        }
+
+        .confirm-button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            border: none;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .confirm-button:hover {
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+            transform: scale(1.05);
+        }
+
+        .confirm-button:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <h1>Restaurant Rating</h1>
+    <div class="restaurant-container">
+        <div class="restaurant">
+            <h2>The Fancy Bistro</h2>
+            <div class="stars" data-restaurant="A Restaurant in the U.S.">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+            </div>
+            <p id="rating-message">Rate this restaurant</p>
+            <button class="confirm-button">Confirm Rating</button>
+        </div>
+    </div>
+
+    <script>
+        let selectedRating = 0;
+        let isSubmitting = false;  // 记录是否正在提交
+        const backendUrl = "http://localhost:5222/submit_rating";
+        const confirmButton = document.querySelector('.confirm-button');
+
+        document.querySelectorAll('.stars').forEach(starContainer => {
+            const stars = starContainer.querySelectorAll('.star');
+
+
+            starContainer.addEventListener('click', function (event) {
+                if (event.target.classList.contains('star')) {
+                    selectedRating = event.target.getAttribute('data-value');
+                    updateStars(selectedRating);
+                    document.getElementById('rating-message').innerText = `You selected: ${selectedRating} stars`;
+                }
+            });
+
+
+            starContainer.addEventListener('mouseover', function (event) {
+                if (event.target.classList.contains('star')) {
+                    const hoverValue = event.target.getAttribute('data-value');
+                    updateStars(hoverValue);
+                }
+            });
+
+
+            starContainer.addEventListener('mouseleave', function () {
+                updateStars(selectedRating);
+            });
+
+            function updateStars(value) {
+                stars.forEach(star => {
+                    star.classList.toggle('selected', star.getAttribute('data-value') <= value);
+                });
+            }
+        });
+
+        confirmButton.addEventListener('click', function () {
+            if (selectedRating > 0 && !isSubmitting) {
+                isSubmitting = true;  // 标记为正在提交
+                confirmButton.disabled = true; // 禁用按钮，防止重复提交
+
+                fetch(backendUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ restaurant: "The Fancy Bistro", rating: selectedRating })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    resetRating();
+                    setTimeout(() => {
+                        isSubmitting = false;
+                        confirmButton.disabled = false; // 5秒后重新启用按钮
+                    }, 5000);
+                })
+                .catch(error => {
+                    alert('Failed to submit rating. Please try again.');
+                    console.error('Error:', error);
+                    isSubmitting = false;
+                    confirmButton.disabled = false;
+                });
+            } else {
+                alert('Please select a rating before confirming.');
+            }
+        });
+
+        function resetRating() {
+            selectedRating = 0;
+            document.getElementById('rating-message').innerText = "Rate this restaurant";
+            document.querySelectorAll('.star').forEach(star => {
+                star.classList.remove('selected');
+            });
+        }
+    </script>
+</body>
+</html>

