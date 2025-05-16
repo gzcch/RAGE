@@ -1,4 +1,3 @@
-```markdown
 # 🧪 RAGE: Risk Assessment of GUI Agents
 
 **RAGE** (**R**isk **A**ssessment of GUI Ag**E**nts) is a framework designed to evaluate the **security performance** of GUI-based agents within a **real computer environment**.  
