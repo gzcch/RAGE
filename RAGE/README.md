@@ -11,7 +11,7 @@ In this work, we aim to bridge the gap between simulated benchmarks and real-wor
 ```
 
 .
-├── run\_eval.py             # Main end-to-end evaluation script
+├── run_ours_GUI_safety.py            # Main end-to-end evaluation script
 ├── lib\_run\_single.py       # Logic for running and evaluating individual tasks
 ├── desktop\_env/            # Desktop VM environment integration
 │   └── desktop\_env.py      # DesktopEnv implementation
