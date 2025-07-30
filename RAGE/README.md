@@ -127,11 +127,7 @@ Each example in `test_all_meta_path` must be a JSON object with at least:
 
 ## 📈 Logs & Results
 
-### Logs
 
-* `logs/normal-YYYYMMDD@HHMMSS.log` (INFO+)
-* `logs/debug-YYYYMMDD@HHMMSS.log` (DEBUG)
-* `logs/sdebug-YYYYMMDD@HHMMSS.log` (DEBUG filtered for DesktopEnv)
 
 ### Results Directory
 
