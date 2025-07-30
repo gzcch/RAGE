@@ -825,7 +825,6 @@ class PromptAgent:
                 api_key=os.environ.get("XIAOAI_API_KEY"),
                 base_url="https://xiaoai.plus/v1",
             )
-            #sk-dl7SwLkSfh1nGj3qtBg9hJnqQdViOW4Rd3VPwauH4awr9Gve sk-ayGHlYZjqygvkcLquE7V4f0lBjGMDsUMzCgnspo6ye66GAGq sk-oj1bM01SN34d3nAX4SZNH84SZGlyCA8FlDo82awItB6Htlir
 
             print(payload["messages"])
             print('##############################')
@@ -1307,7 +1306,7 @@ class PromptAgentwoaction:
             logger.debug("CLAUDE MESSAGE: %s", repr(claude_messages))
 
             headers = {
-                "x-api-key": "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",
+                "x-api-key": "",
                 "anthropic-version": "2023-06-01",
                 "content-type": "application/json"
             }
@@ -1509,7 +1508,6 @@ class PromptAgentwoaction:
                 api_key=os.environ.get("XIAOAI_API_KEY"),
                 base_url="https://xiaoai.plus/v1",
             )
-            #sk-dl7SwLkSfh1nGj3qtBg9hJnqQdViOW4Rd3VPwauH4awr9Gve sk-ayGHlYZjqygvkcLquE7V4f0lBjGMDsUMzCgnspo6ye66GAGq sk-oj1bM01SN34d3nAX4SZNH84SZGlyCA8FlDo82awItB6Htlir
 
             for attempt in range(5):
                 try:
